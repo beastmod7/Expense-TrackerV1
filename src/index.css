@@ -23,20 +23,22 @@ body {
 
 h1, h2, h3 {
   color: var(--primary-color);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
 
 .welcome-screen {
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 5vh;
+  padding: 1rem;
 }
 
 .welcome-screen input {
   padding: 0.8rem;
-  margin-right: 1rem;
-  width: 250px;
+  margin: 0.5rem 0;
+  width: 100%;
+  max-width: 300px;
   border: 2px solid var(--primary-color);
   border-radius: 8px;
   background: var(--card-color);
@@ -55,30 +57,29 @@ h1, h2, h3 {
   transition: background 0.3s;
   font-weight: 700;
   letter-spacing: 0.5px;
-}
-
-.welcome-screen button:hover {
-  background: var(--secondary-color);
+  width: 100%;
+  max-width: 300px;
+  margin-top: 0.5rem;
 }
 
 .expense-tracker {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1rem;
 }
 
 .expense-input, .category-management, .analytics, .recent-transactions {
   background: var(--card-color);
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .expense-form, .category-form {
   display: grid;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .expense-form input,
@@ -90,6 +91,7 @@ h1, h2, h3 {
   background: var(--background-color);
   color: var(--text-color);
   font-size: 1rem;
+  width: 100%;
 }
 
 .expense-form button,
@@ -104,11 +106,7 @@ h1, h2, h3 {
   transition: background 0.3s;
   font-weight: 700;
   letter-spacing: 0.5px;
-}
-
-.expense-form button:hover,
-.category-form button:hover {
-  background: var(--secondary-color);
+  width: 100%;
 }
 
 .category-management {
@@ -117,19 +115,20 @@ h1, h2, h3 {
 
 .category-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
 .category-controls {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .category-list {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.5rem;
   max-height: 300px;
   overflow-y: auto;
   transition: max-height 0.3s ease-out;
@@ -144,15 +143,10 @@ h1, h2, h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 0.8rem;
   background: var(--background-color);
   border-radius: 8px;
   color: var(--text-color);
-}
-
-.category-item span:last-child {
-  color: var(--primary-color);
-  font-weight: 700;
 }
 
 .transactions-container {
@@ -163,20 +157,18 @@ h1, h2, h3 {
 
 .transaction {
   background: var(--background-color);
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 8px;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .transaction-header {
   display: flex;
   justify-content: space-between;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.transaction-header span:last-child {
-  color: var(--primary-color);
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .transaction-details {
@@ -184,14 +176,13 @@ h1, h2, h3 {
   justify-content: space-between;
   color: var(--muted-text);
   font-size: 0.9rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .total-spent {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
-  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .category-progress {
@@ -200,39 +191,12 @@ h1, h2, h3 {
 
 progress {
   width: 100%;
-  height: 8px;
-  margin: 0.5rem 0;
-  border-radius: 4px;
-}
-
-progress::-webkit-progress-bar {
-  background-color: var(--background-color);
-  border-radius: 4px;
-}
-
-progress::-webkit-progress-value {
-  background-color: var(--primary-color);
-  border-radius: 4px;
-}
-
-progress::-moz-progress-bar {
-  background-color: var(--primary-color);
-  border-radius: 4px;
+  height: 6px;
+  margin: 0.3rem 0;
 }
 
 .category-breakdown {
-  margin-top: 1.5rem;
-}
-
-.category-progress span {
-  display: block;
-  margin-bottom: 0.3rem;
-}
-
-.category-progress span:last-child {
-  color: var(--primary-color);
-  font-weight: 700;
-  text-align: right;
+  margin-top: 1rem;
 }
 
 .toggle-category-btn {
@@ -246,87 +210,97 @@ progress::-moz-progress-bar {
   transition: background 0.3s;
   font-weight: 700;
   letter-spacing: 0.5px;
-}
-
-.toggle-category-btn:hover {
-  background: var(--secondary-color);
+  flex: 1;
+  min-width: 120px;
 }
 
 .category-form {
-  margin-bottom: 1.5rem;
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  margin-bottom: 1rem;
 }
 
 .expense-form .input-row {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-}
-
-.expense-form .input-row input,
-.expense-form .input-row select {
-  flex: 1;
 }
 
 .delete-category-btn {
   background: transparent;
   color: var(--secondary-color);
   border: none;
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem;
   cursor: pointer;
   font-size: 1rem;
-  transition: color 0.3s;
-}
-
-.delete-category-btn:hover {
-  color: #ff0000;
 }
 
 .pie-chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
+  margin: 1rem auto;
   width: 100%;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 250px;
 }
 
-.pie-chart-container svg {
-  max-width: 100%;
-  height: auto;
+/* Responsive Styles */
+@media (min-width: 480px) {
+  .welcome-screen {
+    margin-top: 10vh;
+  }
+
+  .expense-tracker {
+    padding: 1.5rem;
+  }
+
+  .expense-input, .category-management, .analytics, .recent-transactions {
+    padding: 1.5rem;
+  }
+
+  .expense-form .input-row {
+    flex-direction: row;
+  }
+
+  .category-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .transaction-header, .transaction-details {
+    flex-wrap: nowrap;
+  }
+
+  .total-spent {
+    font-size: 1.4rem;
+  }
+
+  progress {
+    height: 8px;
+  }
+}
+
+@media (min-width: 768px) {
+  .expense-tracker {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .category-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Scrollbar styling */
-.transactions-container::-webkit-scrollbar,
-.category-list::-webkit-scrollbar {
-  width: 8px;
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.transactions-container::-webkit-scrollbar-track,
-.category-list::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: var(--background-color);
-  border-radius: 4px;
 }
 
-.transactions-container::-webkit-scrollbar-thumb,
-.category-list::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: var(--primary-color);
   border-radius: 4px;
 }
 
-.transactions-container::-webkit-scrollbar-thumb:hover,
-.category-list::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: var(--secondary-color);
 }
