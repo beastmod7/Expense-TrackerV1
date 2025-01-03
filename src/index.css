@@ -1,0 +1,282 @@
+:root {
+      --primary-color: #ff7f50;
+      --secondary-color: #ff4500;
+      --background-color: #1e1e2e;
+      --card-color: #2a2a3a;
+      --text-color: #ffffff;
+      --muted-text: #a0a0a0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .welcome-screen {
+      text-align: center;
+      margin-top: 10vh;
+    }
+
+    .welcome-screen input {
+      padding: 0.8rem;
+      margin-right: 1rem;
+      width: 250px;
+      border: 2px solid var(--primary-color);
+      border-radius: 8px;
+      background: var(--card-color);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .welcome-screen button {
+      padding: 0.8rem 2rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .welcome-screen button:hover {
+      background: var(--secondary-color);
+    }
+
+    .expense-tracker {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .expense-input, .category-management, .analytics, .recent-transactions {
+      background: var(--card-color);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .expense-form, .category-form {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .expense-form input,
+    .expense-form select,
+    .category-form input {
+      padding: 0.8rem;
+      border: 2px solid var(--primary-color);
+      border-radius: 8px;
+      background: var(--background-color);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .expense-form button,
+    .category-form button {
+      padding: 0.8rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .expense-form button:hover,
+    .category-form button:hover {
+      background: var(--secondary-color);
+    }
+
+    .category-list {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .category-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--background-color);
+      border-radius: 8px;
+      color: var(--text-color);
+    }
+
+    .category-item span:last-child {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .transaction {
+      background: var(--background-color);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+    }
+
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .transaction-header span:last-child {
+      color: var(--primary-color);
+    }
+
+    .transaction-details {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted-text);
+      font-size: 0.9rem;
+    }
+
+    .total-spent {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .category-progress {
+      margin-bottom: 1rem;
+    }
+
+    progress {
+      width: 100%;
+      height: 8px;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+    }
+
+    progress::-webkit-progress-bar {
+      background-color: var(--background-color);
+      border-radius: 4px;
+    }
+
+    progress::-webkit-progress-value {
+      background-color: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    progress::-moz-progress-bar {
+      background-color: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    .category-breakdown {
+      margin-top: 1.5rem;
+    }
+
+    .category-progress span {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .category-progress span:last-child {
+      color: var(--primary-color);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .toggle-category-btn {
+      padding: 0.5rem 1rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-category-btn:hover {
+      background: var(--secondary-color);
+    }
+
+    .category-form {
+      margin-bottom: 1.5rem;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .expense-form .input-row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .expense-form .input-row input,
+    .expense-form .input-row select {
+      flex: 1;
+    }
+    .delete-category-btn {
+      background: transparent;
+      color: var(--secondary-color);
+      border: none;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    .delete-category-btn:hover {
+      color: #ff0000;
+    }
+    .pie-chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pie-chart-container svg {
+      max-width: 100%;
+      height: auto;
+    }
