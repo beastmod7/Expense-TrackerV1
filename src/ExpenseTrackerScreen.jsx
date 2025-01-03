@@ -81,6 +81,7 @@ export default function ExpenseTrackerScreen({ username }) {
     description: ''
   })
   const [showCategoryForm, setShowCategoryForm] = useState(false)
+  const [isCategoriesCollapsed, setIsCategoriesCollapsed] = useState(false)
 
   // Save categories to localStorage whenever they change
   useEffect(() => {
@@ -94,6 +95,10 @@ export default function ExpenseTrackerScreen({ username }) {
 
   const toggleCategoryForm = () => {
     setShowCategoryForm(!showCategoryForm)
+  }
+
+  const toggleCategoriesCollapse = () => {
+    setIsCategoriesCollapsed(!isCategoriesCollapsed)
   }
 
   const addCategory = (e) => {
@@ -138,10 +143,13 @@ export default function ExpenseTrackerScreen({ username }) {
       .toFixed(2)
   }
 
-  const recentExpenses = expenses.slice(0, 5)
   const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0).toFixed(2)
-
   const pieChart = generatePieChart(categories, expenses, totalSpent);
+
+  // Get categories with expenses
+  const categoriesWithData = categories.filter(category => 
+    expenses.some(expense => expense.category === category)
+  )
 
   return (
     <div className="expense-tracker">
@@ -183,12 +191,20 @@ export default function ExpenseTrackerScreen({ username }) {
       <div className="category-management">
         <div className="category-header">
           <h3>Categories 🗂️</h3>
-          <button 
-            onClick={toggleCategoryForm}
-            className="toggle-category-btn"
-          >
-            {showCategoryForm ? 'Hide' : 'Add Category ➕'}
-          </button>
+          <div className="category-controls">
+            <button 
+              onClick={toggleCategoryForm}
+              className="toggle-category-btn"
+            >
+              {showCategoryForm ? 'Hide' : 'Add Category ➕'}
+            </button>
+            <button 
+              onClick={toggleCategoriesCollapse}
+              className="toggle-category-btn"
+            >
+              {isCategoriesCollapsed ? 'Show All' : 'Collapse'}
+            </button>
+          </div>
         </div>
         
         {showCategoryForm && (
@@ -203,7 +219,7 @@ export default function ExpenseTrackerScreen({ username }) {
           </form>
         )}
         
-        <div className="category-list">
+        <div className={`category-list ${isCategoriesCollapsed ? 'collapsed' : ''}`}>
           {categories.map((category, index) => (
             <div key={index} className="category-item">
               <span>{category}</span>
@@ -229,7 +245,7 @@ export default function ExpenseTrackerScreen({ username }) {
           {pieChart}
         </div>
         <div className="category-breakdown">
-          {categories.map((category, index) => (
+          {categoriesWithData.map((category, index) => (
             <div key={index} className="category-progress">
               <span>{category}</span>
               <progress
@@ -243,19 +259,21 @@ export default function ExpenseTrackerScreen({ username }) {
       </div>
 
       <div className="recent-transactions">
-        <h3>Recent Transactions 🧾</h3>
-        {recentExpenses.map((expense, index) => (
-          <div key={index} className="transaction">
-            <div className="transaction-header">
-              <span>{expense.category}</span>
-              <span>₹{expense.amount.toFixed(2)}</span>
+        <h3>All Transactions 🧾</h3>
+        <div className="transactions-container">
+          {expenses.map((expense, index) => (
+            <div key={index} className="transaction">
+              <div className="transaction-header">
+                <span>{expense.category}</span>
+                <span>₹{expense.amount.toFixed(2)}</span>
+              </div>
+              <div className="transaction-details">
+                <span>{expense.description}</span>
+                <span>{expense.date}</span>
+              </div>
             </div>
-            <div className="transaction-details">
-              <span>{expense.description}</span>
-              <span>{expense.date}</span>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )
