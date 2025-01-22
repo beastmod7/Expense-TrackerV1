@@ -83,6 +83,7 @@ export default function ExpenseTrackerScreen({ username }) {
     category: '',
     description: ''
   });
+  const [editingExpense, setEditingExpense] = useState(null);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [isCategoriesCollapsed, setIsCategoriesCollapsed] = useState(false);
 
@@ -237,8 +238,69 @@ export default function ExpenseTrackerScreen({ username }) {
             >
               {isCategoriesCollapsed ? 'Show All' : 'Collapse'}
             </button>
+      </div>
+
+      {editingExpense && (
+        <div className="edit-modal">
+          <div className="edit-form">
+            <h3>Edit Transaction</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const updatedExpenses = expenses.map(exp => 
+                exp === editingExpense ? editingExpense : exp
+              );
+              setExpenses(updatedExpenses);
+              setEditingExpense(null);
+            }}>
+              <div className="input-row">
+                <input
+                  type="number"
+                  step="0.01"
+                  value={editingExpense.amount}
+                  onChange={(e) => setEditingExpense({
+                    ...editingExpense,
+                    amount: parseFloat(e.target.value)
+                  })}
+                  placeholder="Amount"
+                  required
+                />
+                <select
+                  value={editingExpense.category}
+                  onChange={(e) => setEditingExpense({
+                    ...editingExpense,
+                    category: e.target.value
+                  })}
+                  required
+                >
+                  <option value="">Select category</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              <input
+                type="text"
+                value={editingExpense.description}
+                onChange={(e) => setEditingExpense({
+                  ...editingExpense,
+                  description: e.target.value
+                })}
+                placeholder="Description"
+              />
+              <div className="form-buttons">
+                <button type="submit">Save</button>
+                <button 
+                  type="button"
+                  onClick={() => setEditingExpense(null)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+      )}
+    </div>
         
         {showCategoryForm && (
           <form onSubmit={addCategory} className="category-form">
@@ -309,6 +371,14 @@ export default function ExpenseTrackerScreen({ username }) {
               <div className="transaction-header">
                 <span>{expense.category}</span>
                 <span>₹{expense.amount.toFixed(2)}</span>
+                <button 
+                  className="edit-btn"
+                  onClick={() => setEditingExpense(expense)}
+                  title="Edit transaction"
+                  aria-label="Edit transaction"
+                >
+                  ✏️
+                </button>
               </div>
               <div className="transaction-details">
                 <span>{expense.description}</span>

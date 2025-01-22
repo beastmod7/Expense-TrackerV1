@@ -205,10 +205,58 @@ h1, h2, h3 {
 }
 
 .transaction {
-  background: var(--background-color);
-  padding: 0.8rem;
-  border-radius: 8px;
+  background: var(--card-color);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--background-color);
+  transition: all 0.2s ease;
+}
+
+.transaction:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
   margin-bottom: 0.5rem;
+  gap: 0.5rem;
+  color: var(--text-color);
+}
+
+.transaction-header .amount-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transaction-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted-text);
+  font-size: 0.9rem;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--background-color);
+}
+
+.transaction-amount {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.transaction-category {
+  padding: 0.25rem 0.5rem;
+  background: var(--background-color);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--text-color);
 }
 
 .transaction-header {
@@ -333,6 +381,56 @@ h1, h2, h3 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
   color: var(--text-color);
+  font-weight: 700;
+}
+
+.analytics {
+  color: var(--text-color);
+}
+
+.analytics h3 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.analytics .category-progress {
+  margin-bottom: 1.5rem;
+}
+
+.analytics .category-progress span {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.analytics .category-progress progress {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--background-color);
+}
+
+.analytics .category-progress progress::-webkit-progress-bar {
+  background: var(--background-color);
+  border-radius: 4px;
+}
+
+.analytics .category-progress progress::-webkit-progress-value {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.analytics .category-progress progress::-moz-progress-bar {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.pie-chart-container {
+  margin: 1.5rem auto;
+  padding: 1rem;
+  background: var(--background-color);
+  border-radius: 12px;
 }
 
 .category-progress {
