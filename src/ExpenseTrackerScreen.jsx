@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { FaFileDownload } from 'react-icons/fa';
+import { useTheme } from './ThemeContext';
 
 const categoryColors = [
   '#FF5733', // Red-Orange
@@ -68,92 +70,123 @@ const generatePieChart = (categories, expenses, totalSpent) => {
 };
 
 export default function ExpenseTrackerScreen({ username }) {
+  const { isDarkMode, toggleTheme } = useTheme();
   const [categories, setCategories] = useState(
     JSON.parse(localStorage.getItem('categories')) || DEFAULT_CATEGORIES
-  )
+  );
   const [expenses, setExpenses] = useState(
     JSON.parse(localStorage.getItem('expenses')) || []
-  )
-  const [newCategory, setNewCategory] = useState('')
+  );
+  const [newCategory, setNewCategory] = useState('');
   const [newExpense, setNewExpense] = useState({
     amount: '',
     category: '',
     description: ''
-  })
-  const [showCategoryForm, setShowCategoryForm] = useState(false)
-  const [isCategoriesCollapsed, setIsCategoriesCollapsed] = useState(false)
+  });
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [isCategoriesCollapsed, setIsCategoriesCollapsed] = useState(false);
 
   // Save categories to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories))
-  }, [categories])
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]);
 
   // Save expenses to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('expenses', JSON.stringify(expenses))
-  }, [expenses])
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  }, [expenses]);
 
   const toggleCategoryForm = () => {
-    setShowCategoryForm(!showCategoryForm)
-  }
+    setShowCategoryForm(!showCategoryForm);
+  };
 
   const toggleCategoriesCollapse = () => {
-    setIsCategoriesCollapsed(!isCategoriesCollapsed)
-  }
+    setIsCategoriesCollapsed(!isCategoriesCollapsed);
+  };
 
   const addCategory = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (newCategory.trim() && !categories.includes(newCategory)) {
-      const newCategories = [...categories, `${newCategory} 🏷️`]
-      setCategories(newCategories)
-      setNewCategory('')
-      setShowCategoryForm(false)
+      const newCategories = [...categories, `${newCategory} 🏷️`];
+      setCategories(newCategories);
+      setNewCategory('');
+      setShowCategoryForm(false);
     }
-  }
+  };
 
   const addExpense = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (newExpense.amount && newExpense.category) {
       const expense = {
         ...newExpense,
         amount: parseFloat(newExpense.amount),
         date: new Date().toLocaleString()
-      }
-      const newExpenses = [expense, ...expenses]
-      setExpenses(newExpenses)
+      };
+      const newExpenses = [expense, ...expenses];
+      setExpenses(newExpenses);
       setNewExpense({
         amount: '',
         category: '',
         description: ''
-      })
+      });
     }
-  }
+  };
 
   const deleteCategory = (categoryToDelete) => {
-    const newCategories = categories.filter(category => category !== categoryToDelete)
-    setCategories(newCategories)
-    const newExpenses = expenses.filter(expense => expense.category !== categoryToDelete)
-    setExpenses(newExpenses)
-  }
+    const newCategories = categories.filter(category => category !== categoryToDelete);
+    setCategories(newCategories);
+    const newExpenses = expenses.filter(expense => expense.category !== categoryToDelete);
+    setExpenses(newExpenses);
+  };
 
   const getCategoryTotal = (category) => {
     return expenses
       .filter(e => e.category === category)
       .reduce((sum, e) => sum + e.amount, 0)
-      .toFixed(2)
-  }
+      .toFixed(2);
+  };
 
-  const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0).toFixed(2)
+  const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0).toFixed(2);
   const pieChart = generatePieChart(categories, expenses, totalSpent);
 
   // Get categories with expenses
   const categoriesWithData = categories.filter(category => 
     expenses.some(expense => expense.category === category)
-  )
+  );
+
+  const handleDownload = () => {
+    // Create CSV content with proper escaping
+    const csvContent = [
+      'Date,Description,Amount(₹),Category',
+      ...expenses.map(e => 
+        `"${e.date}","${e.description.replace(/"/g, '""')}",${e.amount},"${e.category}"`
+      )
+    ].join('\r\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `transactions-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <div className="expense-tracker">
-      <h2>Welcome, <span style={{ color: 'var(--primary-color)' }}>{username}</span> 👋</h2>
+    <div className={`expense-tracker ${isDarkMode ? 'dark' : ''}`}>
+      <div className="header">
+        <h2>Welcome, <span style={{ color: 'var(--primary-color)' }}>{username}</span> 👋</h2>
+        <button 
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+        >
+          {isDarkMode ? '🌙' : '☀️'}
+        </button>
+      </div>
       
       <div className="expense-input">
         <h3>Add Expense 💸</h3>
@@ -259,7 +292,17 @@ export default function ExpenseTrackerScreen({ username }) {
       </div>
 
       <div className="recent-transactions">
-        <h3>All Transactions 🧾</h3>
+        <div className="transactions-header">
+          <h3>All Transactions 🧾</h3>
+          <button 
+            className="download-btn"
+            onClick={handleDownload}
+            title="Download as CSV"
+            aria-label="Download transaction history"
+          >
+            <FaFileDownload />
+          </button>
+        </div>
         <div className="transactions-container">
           {expenses.map((expense, index) => (
             <div key={index} className="transaction">
@@ -276,5 +319,5 @@ export default function ExpenseTrackerScreen({ username }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
