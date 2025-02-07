@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { IExpense, IMonthlyExpenses } from '../types/expense.types';
+import { useProfile } from './ProfileContext';
 
 interface ExpenseContextType {
   expenses: IExpense[];
@@ -28,45 +29,55 @@ const ExpenseContext = createContext<ExpenseContextType | null>(null);
 // ... existing imports and initial context
 
 export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
+  const { currentProfile, updateProfile } = useProfile();
   const [expenses, setExpenses] = useState<IExpense[]>([]);
-  const [monthlyExpenses, setMonthlyExpenses] = useState<IMonthlyExpenses>({});
+  const [monthlyExpenses, setMonthlyExpenses] = useState<IMonthlyExpenses>(
+    currentProfile?.monthlyExpenses || {}
+  );
   const [currentMonth, setCurrentMonth] = useState<string>('');
 
+  // Initialize with current profile data
   useEffect(() => {
-    // Initialize with current month
-    const now = new Date();
-    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    setCurrentMonth(monthKey);
-    
-    // Load stored expenses
-    const storedExpenses = localStorage.getItem('monthlyExpenses');
-    if (storedExpenses) {
-      const parsed = JSON.parse(storedExpenses);
-      setMonthlyExpenses(parsed);
-      // Set current month's expenses
-      setExpenses(parsed[monthKey] || []);
+    if (currentProfile) {
+      setMonthlyExpenses(currentProfile.monthlyExpenses);
+      const now = new Date();
+      const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      setCurrentMonth(monthKey);
+      setExpenses(currentProfile.monthlyExpenses[monthKey] || []);
     }
-  }, []);
+  }, [currentProfile]);
+
+  // Save to profile whenever monthlyExpenses changes
+  useEffect(() => {
+    if (currentProfile && Object.keys(monthlyExpenses).length > 0) {
+      updateProfile({
+        monthlyExpenses,
+        lastLogin: new Date()
+      });
+    }
+  }, [monthlyExpenses]);
 
   const addExpense = (expense: IExpense) => {
-    const newExpense = {
-      ...expense,
-      month: currentMonth,
-    };
-    
-    // Update current month expenses
-    const updatedExpenses = [...expenses, newExpense];
-    setExpenses(updatedExpenses);
-    
-    // Update monthly storage
-    const updatedMonthly = {
-      ...monthlyExpenses,
-      [currentMonth]: updatedExpenses,
-    };
-    setMonthlyExpenses(updatedMonthly);
-    
-    // Save to localStorage
-    localStorage.setItem('monthlyExpenses', JSON.stringify(updatedMonthly));
+    try {
+      const newExpense = {
+        ...expense,
+        month: currentMonth,
+      };
+      
+      // Update current month expenses
+      const updatedExpenses = [...expenses, newExpense];
+      setExpenses(updatedExpenses);
+      
+      // Update monthly storage
+      const updatedMonthly = {
+        ...monthlyExpenses,
+        [currentMonth]: updatedExpenses,
+      };
+      setMonthlyExpenses(updatedMonthly);
+    } catch (error) {
+      console.error('Error adding expense:', error);
+      throw new Error('Failed to add expense');
+    }
   };
 
   const switchMonth = (month: string) => {
